@@ -1,5 +1,3 @@
-console.log("Welcome to Odin's Rock Paper Scissors project.");
-
 /* TS compiles its enum type into this (enum-like) JS object
 const Choice = {
     Rock: 'Rock',
@@ -7,78 +5,87 @@ const Choice = {
     Scissors: 'Scissors'
 };
 */
-const CHOICES = ['rock', 'paper', 'scissors'];
-const OUTCOMES = ['win', 'loss', 'draw'];
+const CHOICES = [
+    {
+        name: 'rock',
+        symbol: 'R',
+        beats: 'scissors'
+    },
+    {
+        name: 'paper',
+        symbol: 'P',
+        beats: 'rock'
+    },
+    {
+        name: 'scissors',
+        symbol: 'S',
+        beats: 'paper'
+    } 
+];
 
-function computerPlay()
+let playerScore = 0;
+let computerScore = 0;
+const playerScoreDisplay = document.querySelector("#player-score");
+const computerScoreDisplay = document.querySelector("#computer-score");
+
+function computerChoice()
 {
-    //console.log( CHOICES[Math.floor(Math.random() * CHOICES.length)] );
     return CHOICES[Math.floor(Math.random() * CHOICES.length)];
 }
 
 function playRound(playerSelection, computerSelection) 
 {
-    console.log(playerSelection + " vs " + computerSelection);
+    const matchDisplay = document.createElement('div');
+    matchDisplay.textContent = playerSelection.symbol + ' vs ' + computerSelection.symbol;
+    document.querySelector('#match').append(matchDisplay);
 
-    playerSelection = playerSelection.toLowerCase();
-    computerSelection = computerSelection.toLowerCase();
-
-    if(playerSelection == computerSelection)
-    {
-        return 0; // draw
-    }
-    else if(
-        !CHOICES.includes(playerSelection) ||
-        playerSelection == CHOICES[0] && computerSelection == CHOICES[1] ||
-        playerSelection == CHOICES[1] && computerSelection == CHOICES[2] ||
-        playerSelection == CHOICES[2] && computerSelection == CHOICES[0] )
-    {
-        return 2; // loss
-    }
-    else if(
-        playerSelection == CHOICES[0] && computerSelection == CHOICES[2] ||
-        playerSelection == CHOICES[1] && computerSelection == CHOICES[0] ||
-        playerSelection == CHOICES[2] && computerSelection == CHOICES[1] )
-    {
-        return 1; // win
-    }
-    return -1; // invalid game
+    if (playerSelection.beats == computerSelection.name) return 1;
+    if (playerSelection.name == computerSelection.beats) return 2;
+    return 0;  
 }
 
-function game()
+function resetGame()
 {
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for( let i = 0; i < 5; i++ )
-    {
-        const playerSelection = prompt("What is your choice?");
-        const computerSelection = computerPlay();
-        
-        switch( playRound(playerSelection, computerSelection) )
-        {
-            case 0: // draw
-                break;
-            case 1:
-                playerScore++;
-                break;
-            case 2:
-                computerScore++;
-                break;
-            default:
-                console.log("Invalid Game!");
-        }
-    }
-
-    console.log(`Player: ${playerScore}\nComputer: ${computerScore}`);
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreDisplay.textContent = 0;
+    computerScoreDisplay.textContent = 0;
 }
 
-//game();
+function announceWinner()
+{
+    playerScore > computerScore ? alert("You win!") : alert('You lose!');
+    resetGame();
+}
 
-const divChoices = document.querySelector('#choices');
+function rps(playerChoiceStr)
+{
+    const result = playRound( CHOICES.find( choice => choice.name == playerChoiceStr), computerChoice() );
+
+    switch(result)
+    {
+        case 0:
+            console.log('draw')
+            break;
+        case 1:
+            playerScoreDisplay.textContent = ++playerScore;
+            break;
+        case 2:
+            computerScoreDisplay.textContent = ++computerScore;
+            break;
+        default:
+            console.log("Invalid Game!");
+    }
+
+    if (playerScore >= 5 || computerScore >= 5) 
+    { 
+        announceWinner();
+    };
+}
+
 const btnChoice = document.querySelectorAll('.choice');
 
 btnChoice.forEach(btn => {
-    btn.style.backgroundColor = '#00ff00';
-    btn.addEventListener('click', () => playRound(btn.textContent, computerPlay()));
+    //btn.style.backgroundColor = '#00ff00';
+    btn.addEventListener('click', () => rps(btn.textContent.toLowerCase()));
 });
