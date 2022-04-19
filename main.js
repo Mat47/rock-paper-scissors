@@ -73,4 +73,12 @@ function game()
     console.log(`Player: ${playerScore}\nComputer: ${computerScore}`);
 }
 
-game();
+//game();
+
+const divChoices = document.querySelector('#choices');
+const btnChoice = document.querySelectorAll('.choice');
+
+btnChoice.forEach(btn => {
+    btn.style.backgroundColor = '#00ff00';
+    btn.addEventListener('click', () => playRound(btn.textContent, computerPlay()));
+});
