@@ -8,17 +8,17 @@ const Choice = {
 const CHOICES = [
     {
         name: 'rock',
-        symbol: 'R',
+        symbol: '✊',
         beats: 'scissors'
     },
     {
         name: 'paper',
-        symbol: 'P',
+        symbol: '✋',
         beats: 'rock'
     },
     {
         name: 'scissors',
-        symbol: 'S',
+        symbol: '✌️',
         beats: 'paper'
     } 
 ];
@@ -87,5 +87,6 @@ const btnChoice = document.querySelectorAll('.choice');
 
 btnChoice.forEach(btn => {
     //btn.style.backgroundColor = '#00ff00';
-    btn.addEventListener('click', () => rps(btn.textContent.toLowerCase()));
+    btn.style.fontSize = '150%';
+    btn.addEventListener('click', () => rps(btn.id));
 });
