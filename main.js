@@ -23,25 +23,29 @@ const CHOICES = [
     } 
 ];
 
+let latestPlayerChoice;
 let playerScore = 0;
-let computerScore = 0;
 const playerScoreDisplay = document.querySelector("#player-score");
+
+let latestComputerChoice;
+let computerScore = 0;
 const computerScoreDisplay = document.querySelector("#computer-score");
+
+const matchDisplay = document.querySelector('.match');
 
 function computerChoice()
 {
     return CHOICES[Math.floor(Math.random() * CHOICES.length)];
 }
 
-function playRound(playerSelection, computerSelection) 
+function match(playerSelection, computerSelection) 
 {
-    const matchDisplay = document.createElement('div');
-    matchDisplay.textContent = playerSelection.symbol + ' vs ' + computerSelection.symbol;
-    document.querySelector('#match').append(matchDisplay);
+    latestPlayerChoice = playerSelection;
+    latestComputerChoice = computerSelection;
 
     if (playerSelection.beats == computerSelection.name) return 1;
     if (playerSelection.name == computerSelection.beats) return 2;
-    return 0;  
+    return 0;
 }
 
 function resetGame()
@@ -50,6 +54,7 @@ function resetGame()
     computerScore = 0;
     playerScoreDisplay.textContent = 0;
     computerScoreDisplay.textContent = 0;
+    matchDisplay.innerHTML = '';
 }
 
 function announceWinner()
@@ -58,10 +63,19 @@ function announceWinner()
     resetGame();
 }
 
-function rps(playerChoiceStr)
+function updateMatchDisplay()
 {
-    const result = playRound( CHOICES.find( choice => choice.name == playerChoiceStr), computerChoice() );
+    const currentRoundDiv = document.createElement('div');
+    currentRoundDiv.textContent = latestPlayerChoice.symbol + ' vs ' + latestComputerChoice.symbol;
+    matchDisplay.append(currentRoundDiv);
+}
 
+async function playRound(playerChoiceStr)
+{
+    latestPlayerChoice = CHOICES.find( choice => choice.name == playerChoiceStr);
+    latestComputerChoice = computerChoice();
+
+    const result = match(latestPlayerChoice, latestComputerChoice);
     switch(result)
     {
         case 0:
@@ -77,16 +91,20 @@ function rps(playerChoiceStr)
             console.log("Invalid Game!");
     }
 
+    updateMatchDisplay();
+    
     if (playerScore >= 5 || computerScore >= 5) 
     { 
-        announceWinner();
+        btnChoice.forEach(btn => {
+            btn.removeEventListener('click', playRound);
+        });
+        setTimeout(announceWinner, 0); // wait for DOM to update score
     };
 }
 
 const btnChoice = document.querySelectorAll('.choice');
 
 btnChoice.forEach(btn => {
-    //btn.style.backgroundColor = '#00ff00';
-    btn.style.fontSize = '150%';
-    btn.addEventListener('click', () => rps(btn.id));
+    //btn.style.fontSize = '150%';
+    btn.addEventListener('click', () => playRound(btn.id));
 });

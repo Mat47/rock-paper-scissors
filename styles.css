@@ -1,0 +1,33 @@
+/*
+* {
+    padding: 0;
+    margin: 0;
+}
+*/
+
+body {
+    background-color: #65ce9f;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+}
+
+h1 {
+    background-color: orchid;
+    padding: 1em;
+}
+
+.choice {
+    font-size: 5em;
+    background: none;
+    border-style: none;
+    cursor: pointer;
+    margin: 2vw 3vw 5vw 3vw; /* top right bottom left */
+}
+
+.results {
+    font-size: 2em;
+}
+
+.match {
+    font-size: 2em;
+}
