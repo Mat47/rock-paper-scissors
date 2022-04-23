@@ -55,6 +55,7 @@ function resetGame()
     playerScoreDisplay.textContent = 0;
     computerScoreDisplay.textContent = 0;
     matchDisplay.innerHTML = '';
+    console.clear();
 }
 
 function announceWinner()
@@ -63,11 +64,45 @@ function announceWinner()
     resetGame();
 }
 
-function updateMatchDisplay()
-{
-    const currentRoundDiv = document.createElement('div');
-    currentRoundDiv.textContent = latestPlayerChoice.symbol + ' vs ' + latestComputerChoice.symbol;
-    matchDisplay.append(currentRoundDiv);
+function updateMatchDisplay(result)
+{   
+    const _playerChoice = document.createElement('div');
+    _playerChoice.innerText = latestPlayerChoice.symbol;
+    _playerChoice.style.display = "inline";
+    _playerChoice.style.margin = "0 1em 0 0";
+
+    const _vs = document.createElement('div');
+    _vs.innerText = 'v';
+    _vs.style.display = "inline";
+    //_vs.style.margin = "0 0.5em 0 0.5em";
+    _vs.style.fontSize = "0.5em";
+    _vs.style.verticalAlign = "middle";
+
+    const _computerChoice = document.createElement('div');
+    _computerChoice.innerText = latestComputerChoice.symbol;
+    _computerChoice.style.display = "inline";
+    _computerChoice.style.margin = "0 0 0 1em";
+
+    const opacityLost = 0.5;
+    switch(result)
+    {
+        case 1:
+            _computerChoice.style.opacity = opacityLost;
+            break;
+        case 2:
+            _playerChoice.style.opacity = opacityLost;
+            break;
+        default:
+            _playerChoice.style.opacity = opacityLost;
+            _computerChoice.style.opacity = opacityLost;
+    }
+
+    const match = document.createElement('div');
+    match.style.margin = "0 0 5px 0";
+    match.append(_playerChoice);
+    match.append(_vs);
+    match.append(_computerChoice);
+    matchDisplay.prepend(match);
 }
 
 async function playRound(playerChoiceStr)
@@ -79,19 +114,19 @@ async function playRound(playerChoiceStr)
     switch(result)
     {
         case 0:
-            console.log('draw')
+            updateMatchDisplay(0);
             break;
         case 1:
             playerScoreDisplay.textContent = ++playerScore;
+            updateMatchDisplay(1);
             break;
         case 2:
             computerScoreDisplay.textContent = ++computerScore;
+            updateMatchDisplay(2);
             break;
         default:
             console.log("Invalid Game!");
     }
-
-    updateMatchDisplay();
     
     if (playerScore >= 5 || computerScore >= 5) 
     { 

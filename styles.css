@@ -1,19 +1,17 @@
-/*
-* {
-    padding: 0;
-    margin: 0;
-}
-*/
 
 body {
     background-color: #65ce9f;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+h2 {
+    background-color: peachpuff;
+    padding: 1em;
     text-align: center;
 }
 
-h1 {
-    background-color: orchid;
-    padding: 1em;
+.choices {
+    text-align: center;
 }
 
 .choice {
@@ -21,13 +19,41 @@ h1 {
     background: none;
     border-style: none;
     cursor: pointer;
-    margin: 2vw 3vw 5vw 3vw; /* top right bottom left */
+    margin: 3vw 3vw 3vw 3vw; /* top right bottom left */
+    transition: 300ms;
 }
 
+.choice:hover {
+    transform: scale(1.25);
+}
+
+/* flex-container */
 .results {
     font-size: 2em;
+    display: flex;
+    text-align: center;
 }
 
-.match {
-    font-size: 2em;
+/* flex-items */
+.results div {
+    flex: 1 1 0%; /* grow shrink basis default => factor 1 means items will grow/shrink evenly */
+}
+
+.results .match {
+    font-size: 1.5em;
+    flex: 2;
+}
+.results .player {
+    text-align: right;
+}
+.results .computer {
+    text-align: left;
+}
+
+.score {
+    font-size: 2.5em;
+}
+
+div {
+    --border: solid tomato;
 }
