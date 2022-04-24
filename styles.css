@@ -27,16 +27,28 @@ h2 {
     transform: scale(1.25);
 }
 
-/* flex-container */
+/* flex-CONTAINER => display: flex */
 .results {
     font-size: 2em;
     display: flex;
     text-align: center;
+    /*
+    justify-content (horizontally): space-between;
+    align-items (vertically): center;
+    ! alignment is inverted when flex-direction is changed
+
+    gap (the flex version of margin): <some-css-unit>
+    */
 }
 
-/* flex-items */
+/* flex-ITEMS => flex: grow shrink basis 
+ * basis refers to the WIDTH in a row-directed or HEIGHT in a column-directed container
+ * note: block-level elemnts default to the full width of their parent, 
+ *   changing the container's flex-direction: column the block-level elements then default to the height of their content
+ *   (potential chaos when their is no content)
+ */
 .results div {
-    flex: 1 1 0%; /* grow shrink basis default => factor 1 means items will grow/shrink evenly */
+    flex: 1 1 0%; /* default => factor 1 means items will grow/shrink evenly */
 }
 
 .results .match {
